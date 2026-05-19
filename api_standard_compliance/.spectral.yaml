@@ -1,0 +1,13 @@
+extends: '@ibm-cloud/openapi-ruleset'
+#rules:
+#  operation-tags: off
+#  ibm-property-casing-convention: off
+#  ibm-accept-and-return-models: off
+#  operation-operationId: error
+#  operation-description: warn
+#  ibm-no-array-responses: off
+#  ibm-parameter-description: error
+#  ibm-parameter-casing-convention: info
+#  no-$ref-siblings: off
+#  ibm-enum-casing-convention: off
+#  ibm-path-segment-casing-convention: info
