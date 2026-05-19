@@ -89,14 +89,14 @@ Notes
 ## Copy .spectral.yaml into Mattermost `api` folder
 
 ```bash
-cp -v api_standard_compliance/.spectral.yaml /path/to/mattermost_repo_root/api/.spectral.yaml
+cp -v API Standard Compliance/.spectral.yaml /path/to/mattermost_repo_root/api/.spectral.yaml
 ```
 
 If a file already exists at the destination, make a backup first:
 
 ```bash
 cp /path/to/mattermost_repo_root/api/.spectral.yaml /path/to/mattermost_repo_root/api/.spectral.yaml.bak || true
-cp -v api_standard_compliance/.spectral.yaml /path/to/mattermost_repo_root/api/.spectral.yaml
+cp -v API Standard Compliance/.spectral.yaml /path/to/mattermost_repo_root/api/.spectral.yaml
 ```
 
 Verify the copy:
