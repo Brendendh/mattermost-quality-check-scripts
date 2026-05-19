@@ -1,0 +1,179 @@
+name: Dependency and Gosec Check
+on:
+  push:
+    branches:
+      - master
+      - main
+      - release-*
+  pull_request:
+
+jobs:
+  gitleaksscan:
+    name: gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install gitleaks
+        run: |
+          curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.24.3/gitleaks_8.24.3_linux_x64.tar.gz \
+            | tar -xz -C /usr/local/bin gitleaks
+
+      - name: Run gitleaks (full repo scan)
+        run: |
+          gitleaks detect \
+            --source=. \
+            --log-opts="--all" \
+            --redact \
+            -v \
+            --exit-code=1 \
+            --report-format=sarif \
+            --report-path=results.sarif
+      - name: Upload SARIF report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gitleaks-results.sarif
+          path: results.sarif
+
+  gosectestsserver:
+    runs-on: ubuntu-latest
+    env:
+      GO111MODULE: on
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Install gosec
+        run: go install github.com/securego/gosec/v2/cmd/gosec@v2.21.4
+
+      - name: Make reports directory
+        run: mkdir -p reports
+
+      - name: Run Gosec Security Scanner
+        run: gosec -no-fail -fmt html -out reports/gosec-report.html ./server/...
+
+      - name: Check report was created
+        if: always()
+        run: |
+          ls -lh reports/
+          wc -c reports/gosec-report.html
+
+      - name: Upload Gosec Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gosec-report
+          path: reports/gosec-report.html
+
+  gosectestsapi:
+    runs-on: ubuntu-latest
+    env:
+      GO111MODULE: on
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Install gosec
+        run: go install github.com/securego/gosec/v2/cmd/gosec@v2.21.4
+
+      - name: Make reports directory
+        run: mkdir -p reports
+
+      - name: Run Gosec Security Scanner
+        run: gosec -no-fail -fmt html -out reports/gosecapi-report.html ./api/...
+
+      - name: Check report was created
+        if: always()
+        run: |
+          ls -lh reports/
+          wc -c reports/gosecapi-report.html
+
+      - name: Upload Gosec Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gosecapi-report
+          path: reports/gosecapi-report.html
+
+  gosecteststools:
+    runs-on: ubuntu-latest
+    env:
+      GO111MODULE: on
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Install gosec
+        run: go install github.com/securego/gosec/v2/cmd/gosec@v2.21.4
+
+      - name: Make reports directory
+        run: mkdir -p reports
+
+      - name: Run Gosec Security Scanner
+        run: gosec -no-fail -fmt html -out reports/gosectools-report.html ./tools/...
+
+      - name: Check report was created
+        if: always()
+        run: |
+          ls -lh reports/
+          wc -c reports/gosectools-report.html
+
+      - name: Upload Gosec Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gosectools-report
+          path: reports/gosectools-report.html
+
+  depchecktest:
+    runs-on: ubuntu-latest
+    name: depecheck_test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install webapp dependencies
+        working-directory: webapp
+        run: npm install
+
+      - name: Depcheck
+        uses: dependency-check/Dependency-Check_Action@main
+        id: Depcheck
+        with:
+          project: 'mattermost-11.6.1'
+          path: './server'
+          format: 'HTML'
+          out: 'reports'
+          args: >
+            --failOnCVSS 7
+            --enableRetired
+            --exclude "**/export_test.zip"
+
+      - name: Upload Dependency Check results
+        uses: actions/upload-artifact@v4
+        with:
+           name: Depcheck report
+           path: ${{github.workspace}}/reports
