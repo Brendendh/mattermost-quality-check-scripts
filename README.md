@@ -1,0 +1,1 @@
+# mattermost-quality-check-scripts
