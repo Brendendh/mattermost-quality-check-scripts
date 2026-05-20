@@ -1,3 +1,5 @@
+# SonarQube Analysis
+> As the local SonarQube instance uses an in memory database, it is not possible to share the results of our analysis run directly.
 ## Steps to reproduce
 1. Follow the SonarQube instructions on running a local instance of the [Community SonarQube](https://docs.sonarsource.com/sonarqube-server/try-out-sonarqube) using the zip file method. Setup and run Sonar-scanner and SonarQube server by following the onscreen instructions.
 2. Download and unzip version 11.6.1 of Mattermost into its own project.
@@ -6,3 +8,7 @@
 6. Navigate to the directory where you've placed `sonar-project.properties` in a terminal and run 
 ``````
  sonar-scanner -Dsonar.token={INSERT YOUR TOKEN HERE} -Dsonar.host.url=http://localhost:9000
+``````
+---
+# Test Coverage
+Results viewed in `mattermost test coverage.html`
