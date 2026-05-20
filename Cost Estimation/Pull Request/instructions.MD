@@ -4,3 +4,7 @@
 2. Run `generic_pr_info.py`
 3. Run `mattermost_github_scrapper.py`
 4. Finally, run `mattermost_stat_calculator.py`
+
+Or you could just refer to the `mattermost_detailed_pr_with_effort.csv` file which
+is the final output file.
+
