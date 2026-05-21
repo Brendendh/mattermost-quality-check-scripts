@@ -1,0 +1,63 @@
+========================================
+Workflow: server-ci.yml
+Thu 21 May 2026 16:33:35 NZST
+========================================
+🏃 Total runs: 102
+  ✔ Success: 72 (70.6%)
+  ✖ Failure: 5 (4.9%)
+  🤔 Others: 25 (24.5%)
+
+⏰ Workflow run execution time stats
+  Min: 632.0s
+  Max: 3856.0s
+  Avg: 954.2s
+  Med: 735.0s
+  Std: 748.5s
+
+========================================
+Workflow: webapp-ci.yml
+Thu 21 May 2026 16:32:54 NZST
+========================================
+🏃 Total runs: 100
+  ✔ Success: 67 (67.0%)
+  ✖ Failure: 15 (15.0%)
+  🤔 Others: 18 (18.0%)
+
+⏰ Workflow run execution time stats
+  Min: 670.0s
+  Max: 960.0s
+  Avg: 761.8s
+  Med: 752.0s
+  Std: 42.4s
+
+========================================
+Workflow: api.yml
+Thu 21 May 2026 16:33:57 NZST
+========================================
+🏃 Total runs: 100
+  ✔ Success: 85 (85.0%)
+  ✖ Failure: 6 (6.0%)
+  🤔 Others: 9 (9.0%)
+
+⏰ Workflow run execution time stats
+  Min: 46.0s
+  Max: 292.0s
+  Avg: 66.0s
+  Med: 55.0s
+  Std: 33.1s
+
+========================================
+Workflow: server-ci-artifacts.yml
+Thu 21 May 2026 16:35:00 NZST
+========================================
+🏃 Total runs: 100
+  ✔ Success: 51 (51.0%)
+  ✖ Failure: 0 (0.0%)
+  🤔 Others: 49 (49.0%)
+
+⏰ Workflow run execution time stats
+  Min: 156.0s
+  Max: 394.0s
+  Avg: 192.9s
+  Med: 183.0s
+  Std: 39.8s
