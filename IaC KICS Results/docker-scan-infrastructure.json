@@ -1,0 +1,537 @@
+{
+	"kics_version": "v2.1.20",
+	"files_scanned": 3,
+	"lines_scanned": 132,
+	"files_parsed": 3,
+	"lines_parsed": 106,
+	"lines_ignored": 26,
+	"files_failed_to_scan": 0,
+	"queries_total": 48,
+	"queries_failed_to_execute": 0,
+	"queries_failed_to_compute_similarity_id": 0,
+	"scan_id": "console",
+	"severity_counters": {
+		"CRITICAL": 0,
+		"HIGH": 2,
+		"INFO": 5,
+		"LOW": 6,
+		"MEDIUM": 18,
+		"TRACE": 0
+	},
+	"total_counter": 31,
+	"total_bom_resources": 0,
+	"start": "2026-05-20T03:04:03.708435827Z",
+	"end": "2026-05-20T04:39:31.162024532Z",
+	"paths": [
+		"/scan"
+	],
+	"queries": [
+		{
+			"query_name": "Missing User Instruction",
+			"query_id": "fd54f200-402c-4333-a5a4-36ef6709af2f",
+			"query_url": "https://docs.docker.com/engine/reference/builder/#user",
+			"severity": "HIGH",
+			"platform": "Dockerfile",
+			"cwe": "250",
+			"risk_score": "7.7",
+			"cloud_provider": "COMMON",
+			"category": "Build Process",
+			"experimental": false,
+			"description": "Always set a user in the runtime stage of your Dockerfile. Without it, the container defaults to root, even if earlier build stages define a user.",
+			"description_id": "eb49caf6",
+			"files": [
+				{
+					"file_name": "../../scan/webapp/channels/build/Dockerfile",
+					"similarity_id": "a84a203e2d3106014d2e2bb2b945ce2909af98cfc7fb66dea785129536a2c5f2",
+					"line": 1,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{node:14.16}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "The 'Dockerfile' should contain the 'USER' instruction",
+					"actual_value": "The 'Dockerfile' does not contain any 'USER' instruction"
+				},
+				{
+					"file_name": "../../scan/server/build/docker-preview/Dockerfile",
+					"similarity_id": "ea0796113ccf2691ceecc1878a784c598abf552988912d6d1466a09c9a8bd3be",
+					"line": 3,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{postgres:14}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "The 'Dockerfile' should contain the 'USER' instruction",
+					"actual_value": "The 'Dockerfile' does not contain any 'USER' instruction"
+				}
+			]
+		},
+		{
+			"query_name": "Add Instead of Copy",
+			"query_id": "9513a694-aa0d-41d8-be61-3271e056f36b",
+			"query_url": "https://docs.docker.com/engine/reference/builder/#add",
+			"severity": "MEDIUM",
+			"platform": "Dockerfile",
+			"cwe": "610",
+			"risk_score": "5.2",
+			"category": "Supply-Chain",
+			"experimental": false,
+			"description": "Using ADD to load external installation scripts could lead to an evil web server leveraging this and loading a malicious script.",
+			"description_id": "0aedd324",
+			"files": [
+				{
+					"file_name": "../../scan/server/build/docker-preview/Dockerfile",
+					"similarity_id": "2cd387bd07684e007d070e6260c0c04c98d3dbb5e789ded2f79a8ab2e1431abb",
+					"line": 24,
+					"issue_type": "IncorrectValue",
+					"search_key": "FROM={{postgres:14}}.{{ADD config_docker.json ./mattermost/config/config_docker.json}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "'COPY' config_docker.json",
+					"actual_value": "'ADD' config_docker.json"
+				},
+				{
+					"file_name": "../../scan/server/build/docker-preview/Dockerfile",
+					"similarity_id": "6f1c6f90154ac67cf60c4ea2947e2d6089ed028dd126494f3536f892388e47a8",
+					"line": 25,
+					"issue_type": "IncorrectValue",
+					"search_key": "FROM={{postgres:14}}.{{ADD docker-entry.sh .}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "'COPY' docker-entry.sh",
+					"actual_value": "'ADD' docker-entry.sh"
+				}
+			]
+		},
+		{
+			"query_name": "Apt Get Install Pin Version Not Defined",
+			"query_id": "965a08d7-ef86-4f14-8792-4a3b2098937e",
+			"query_url": "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/",
+			"severity": "MEDIUM",
+			"platform": "Dockerfile",
+			"cwe": "1357",
+			"risk_score": "5.7",
+			"category": "Supply-Chain",
+			"experimental": false,
+			"description": "When installing a package, its pin version should be defined",
+			"description_id": "e0e1edad",
+			"files": [
+				{
+					"file_name": "../../scan/server/build/docker-preview/Dockerfile",
+					"similarity_id": "d7bdda5a14dc38902104974c5527e8f1d5e09b0a300258f1c4bc32bf363b02b5",
+					"line": 5,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{postgres:14}}.RUN={{apt-get update \u0026\u0026 apt-get install -y ca-certificates}}",
+					"search_line": -1,
+					"search_value": "ca-certificates",
+					"expected_value": "Package 'ca-certificates' has version defined",
+					"actual_value": "Package 'ca-certificates' does not have version defined"
+				},
+				{
+					"file_name": "../../scan/server/build/Dockerfile",
+					"similarity_id": "04761aad90793aae570ab975b9ea14257630d564dc1dd6b77e0d96ad9085c6f5",
+					"line": 14,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{ubuntu:noble-20251013@sha256:c35e29c9450151419d9448b0fd75374fec4fff364a27f176fb458d472dfc9e54 AS builder}}.RUN={{apt-get update   \u0026\u0026 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y   ca-certificates   curl   media-types   mailcap   unrtf   wv   poppler-utils   tidy   tzdata   \u0026\u0026 rm -rf /var/lib/apt/lists/*}}",
+					"search_line": -1,
+					"search_value": "curl",
+					"expected_value": "Package 'curl' has version defined",
+					"actual_value": "Package 'curl' does not have version defined"
+				},
+				{
+					"file_name": "../../scan/server/build/Dockerfile",
+					"similarity_id": "d890efb7dd6be19446da13033f83298cdbf1445c5fb7e14d708509e5b3ff612f",
+					"line": 14,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{ubuntu:noble-20251013@sha256:c35e29c9450151419d9448b0fd75374fec4fff364a27f176fb458d472dfc9e54 AS builder}}.RUN={{apt-get update   \u0026\u0026 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y   ca-certificates   curl   media-types   mailcap   unrtf   wv   poppler-utils   tidy   tzdata   \u0026\u0026 rm -rf /var/lib/apt/lists/*}}",
+					"search_line": -1,
+					"search_value": "media-types",
+					"expected_value": "Package 'media-types' has version defined",
+					"actual_value": "Package 'media-types' does not have version defined"
+				},
+				{
+					"file_name": "../../scan/server/build/Dockerfile",
+					"similarity_id": "2cc7787680977fde8ee87c5c177998091a732fbb54b2483e4b51151ca994e064",
+					"line": 14,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{ubuntu:noble-20251013@sha256:c35e29c9450151419d9448b0fd75374fec4fff364a27f176fb458d472dfc9e54 AS builder}}.RUN={{apt-get update   \u0026\u0026 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y   ca-certificates   curl   media-types   mailcap   unrtf   wv   poppler-utils   tidy   tzdata   \u0026\u0026 rm -rf /var/lib/apt/lists/*}}",
+					"search_line": -1,
+					"search_value": "wv",
+					"expected_value": "Package 'wv' has version defined",
+					"actual_value": "Package 'wv' does not have version defined"
+				},
+				{
+					"file_name": "../../scan/server/build/Dockerfile",
+					"similarity_id": "fcbb0b6e0d1d08f9ce26d1268b23d48d1a75765f846b41898aee32a7284209e1",
+					"line": 14,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{ubuntu:noble-20251013@sha256:c35e29c9450151419d9448b0fd75374fec4fff364a27f176fb458d472dfc9e54 AS builder}}.RUN={{apt-get update   \u0026\u0026 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y   ca-certificates   curl   media-types   mailcap   unrtf   wv   poppler-utils   tidy   tzdata   \u0026\u0026 rm -rf /var/lib/apt/lists/*}}",
+					"search_line": -1,
+					"search_value": "tidy",
+					"expected_value": "Package 'tidy' has version defined",
+					"actual_value": "Package 'tidy' does not have version defined"
+				},
+				{
+					"file_name": "../../scan/server/build/Dockerfile",
+					"similarity_id": "0bd0caa4a7f9224161637d877c6797898278b6a8a80b175754ab9bf0355e1d33",
+					"line": 14,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{ubuntu:noble-20251013@sha256:c35e29c9450151419d9448b0fd75374fec4fff364a27f176fb458d472dfc9e54 AS builder}}.RUN={{apt-get update   \u0026\u0026 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y   ca-certificates   curl   media-types   mailcap   unrtf   wv   poppler-utils   tidy   tzdata   \u0026\u0026 rm -rf /var/lib/apt/lists/*}}",
+					"search_line": -1,
+					"search_value": "tzdata",
+					"expected_value": "Package 'tzdata' has version defined",
+					"actual_value": "Package 'tzdata' does not have version defined"
+				},
+				{
+					"file_name": "../../scan/webapp/channels/build/Dockerfile",
+					"similarity_id": "200a7fb2abf86a08fd56cf4b7fdea2afc8684bf9f87353ee5eb7b7ead4d88712",
+					"line": 2,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{node:14.16}}.RUN={{apt-get update \u0026\u0026 apt-get install -y make gcc nasm libpng-dev}}",
+					"search_line": -1,
+					"search_value": "gcc",
+					"expected_value": "Package 'gcc' has version defined",
+					"actual_value": "Package 'gcc' does not have version defined"
+				},
+				{
+					"file_name": "../../scan/webapp/channels/build/Dockerfile",
+					"similarity_id": "dea5494ed18d66e0c9ac89111e44c0558d2965b9ed45533a3ea211792b6f00a5",
+					"line": 2,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{node:14.16}}.RUN={{apt-get update \u0026\u0026 apt-get install -y make gcc nasm libpng-dev}}",
+					"search_line": -1,
+					"search_value": "make",
+					"expected_value": "Package 'make' has version defined",
+					"actual_value": "Package 'make' does not have version defined"
+				},
+				{
+					"file_name": "../../scan/server/build/Dockerfile",
+					"similarity_id": "486c0330c4c566cdfd70d85735c4842088927ebe6406b5a8d2b3b7c2fca49186",
+					"line": 14,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{ubuntu:noble-20251013@sha256:c35e29c9450151419d9448b0fd75374fec4fff364a27f176fb458d472dfc9e54 AS builder}}.RUN={{apt-get update   \u0026\u0026 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y   ca-certificates   curl   media-types   mailcap   unrtf   wv   poppler-utils   tidy   tzdata   \u0026\u0026 rm -rf /var/lib/apt/lists/*}}",
+					"search_line": -1,
+					"search_value": "mailcap",
+					"expected_value": "Package 'mailcap' has version defined",
+					"actual_value": "Package 'mailcap' does not have version defined"
+				},
+				{
+					"file_name": "../../scan/webapp/channels/build/Dockerfile",
+					"similarity_id": "54604f4a3afb353fb371738b9aa81cf4d1a66fe04b6297ac9559f1ab9a3a931e",
+					"line": 2,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{node:14.16}}.RUN={{apt-get update \u0026\u0026 apt-get install -y make gcc nasm libpng-dev}}",
+					"search_line": -1,
+					"search_value": "libpng-dev",
+					"expected_value": "Package 'libpng-dev' has version defined",
+					"actual_value": "Package 'libpng-dev' does not have version defined"
+				},
+				{
+					"file_name": "../../scan/webapp/channels/build/Dockerfile",
+					"similarity_id": "ef6e6f392e9ce4393c72ff365787fdd9dbe3231c9d48096c448024eeec91182d",
+					"line": 2,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{node:14.16}}.RUN={{apt-get update \u0026\u0026 apt-get install -y make gcc nasm libpng-dev}}",
+					"search_line": -1,
+					"search_value": "nasm",
+					"expected_value": "Package 'nasm' has version defined",
+					"actual_value": "Package 'nasm' does not have version defined"
+				},
+				{
+					"file_name": "../../scan/server/build/Dockerfile",
+					"similarity_id": "aea85dee6f608a81d5cc8675b86689b06558e7bbce0fa0f6f0cdc88424139013",
+					"line": 14,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{ubuntu:noble-20251013@sha256:c35e29c9450151419d9448b0fd75374fec4fff364a27f176fb458d472dfc9e54 AS builder}}.RUN={{apt-get update   \u0026\u0026 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y   ca-certificates   curl   media-types   mailcap   unrtf   wv   poppler-utils   tidy   tzdata   \u0026\u0026 rm -rf /var/lib/apt/lists/*}}",
+					"search_line": -1,
+					"search_value": "ca-certificates",
+					"expected_value": "Package 'ca-certificates' has version defined",
+					"actual_value": "Package 'ca-certificates' does not have version defined"
+				},
+				{
+					"file_name": "../../scan/server/build/Dockerfile",
+					"similarity_id": "2f436786433cd513b406c9b04dd0f86e66d50af7c16ea78bab94815a7997a2d9",
+					"line": 14,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{ubuntu:noble-20251013@sha256:c35e29c9450151419d9448b0fd75374fec4fff364a27f176fb458d472dfc9e54 AS builder}}.RUN={{apt-get update   \u0026\u0026 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y   ca-certificates   curl   media-types   mailcap   unrtf   wv   poppler-utils   tidy   tzdata   \u0026\u0026 rm -rf /var/lib/apt/lists/*}}",
+					"search_line": -1,
+					"search_value": "poppler-utils",
+					"expected_value": "Package 'poppler-utils' has version defined",
+					"actual_value": "Package 'poppler-utils' does not have version defined"
+				},
+				{
+					"file_name": "../../scan/server/build/Dockerfile",
+					"similarity_id": "4d61b19b619e24ae57df2785cdb1767acc14540f120edb8b3674ad07e68ec217",
+					"line": 14,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{ubuntu:noble-20251013@sha256:c35e29c9450151419d9448b0fd75374fec4fff364a27f176fb458d472dfc9e54 AS builder}}.RUN={{apt-get update   \u0026\u0026 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y   ca-certificates   curl   media-types   mailcap   unrtf   wv   poppler-utils   tidy   tzdata   \u0026\u0026 rm -rf /var/lib/apt/lists/*}}",
+					"search_line": -1,
+					"search_value": "unrtf",
+					"expected_value": "Package 'unrtf' has version defined",
+					"actual_value": "Package 'unrtf' does not have version defined"
+				}
+			]
+		},
+		{
+			"query_name": "Image Version Not Explicit",
+			"query_id": "9efb0b2d-89c9-41a3-91ca-dcc0aec911fd",
+			"query_url": "https://docs.docker.com/engine/reference/builder/#from",
+			"severity": "MEDIUM",
+			"platform": "Dockerfile",
+			"cwe": "1357",
+			"risk_score": "6.4",
+			"category": "Supply-Chain",
+			"experimental": false,
+			"description": "Always tag the version of an image explicitly",
+			"description_id": "4f469f06",
+			"files": [
+				{
+					"file_name": "../../scan/server/build/Dockerfile",
+					"similarity_id": "8c5c10712e8be3d0de6aa7162ee99eaed5851264828324569aa620b6b5483224",
+					"line": 39,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{gcr.io/distroless/base-debian12}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "FROM gcr.io/distroless/base-debian12:'version'",
+					"actual_value": "FROM gcr.io/distroless/base-debian12'"
+				}
+			]
+		},
+		{
+			"query_name": "Not Using JSON In CMD And ENTRYPOINT Arguments",
+			"query_id": "b86987e1-6397-4619-81d5-8807f2387c79",
+			"query_url": "https://docs.docker.com/engine/reference/builder/#entrypoint",
+			"severity": "MEDIUM",
+			"platform": "Dockerfile",
+			"cwe": "573",
+			"risk_score": "5.2",
+			"category": "Build Process",
+			"experimental": false,
+			"description": "Ensure that we are using JSON in the CMD and ENTRYPOINT Arguments",
+			"description_id": "070b84da",
+			"files": [
+				{
+					"file_name": "../../scan/server/build/docker-preview/Dockerfile",
+					"similarity_id": "4bdf5c2c5e762d8199949603887d933818c24433a433f9cff3ad16d7b212ce31",
+					"line": 28,
+					"issue_type": "IncorrectValue",
+					"search_key": "FROM={{postgres:14}}.{{ENTRYPOINT ./docker-entry.sh}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "{{ENTRYPOINT ./docker-entry.sh}} should be in the JSON Notation",
+					"actual_value": "{{ENTRYPOINT ./docker-entry.sh}} isn't in JSON Notation"
+				}
+			]
+		},
+		{
+			"query_name": "Chown Flag Exists",
+			"query_id": "aa93e17f-b6db-4162-9334-c70334e7ac28",
+			"query_url": "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/",
+			"severity": "LOW",
+			"platform": "Dockerfile",
+			"cwe": "282",
+			"risk_score": "4.6",
+			"category": "Best Practices",
+			"experimental": false,
+			"description": "It is considered a best practice for every executable in a container to be owned by the root user even if it is executed by a non-root user, only execution permissions are required on the file, not ownership",
+			"description_id": "ba0a34dc",
+			"files": [
+				{
+					"file_name": "../../scan/server/build/Dockerfile",
+					"similarity_id": "c887fd1f6bdc6a016cf6152917452ba53c557a93ee47ce267e6e13fb548b9a44",
+					"line": 50,
+					"issue_type": "IncorrectValue",
+					"search_key": "FROM={{gcr.io/distroless/base-debian12}}.{{COPY --from=builder --chown=2000:2000 /etc/ssl/certs /etc/ssl/certs}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "The 'Dockerfile' shouldn´t contain the 'chown' flag",
+					"actual_value": "The 'Dockerfile' contains the 'chown' flag"
+				},
+				{
+					"file_name": "../../scan/server/build/Dockerfile",
+					"similarity_id": "a55d1b708678b2f0deb100abe6482e3a8f15ba65d9c2dfd6b3f70c901f3b8668",
+					"line": 69,
+					"issue_type": "IncorrectValue",
+					"search_key": "FROM={{gcr.io/distroless/base-debian12}}.{{COPY --from=builder --chown=2000:2000 /mattermost /mattermost}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "The 'Dockerfile' shouldn´t contain the 'chown' flag",
+					"actual_value": "The 'Dockerfile' contains the 'chown' flag"
+				}
+			]
+		},
+		{
+			"query_name": "Curl or Wget Instead of Add",
+			"query_id": "4b410d24-1cbe-4430-a632-62c9a931cf1c",
+			"query_url": "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/",
+			"severity": "LOW",
+			"platform": "Dockerfile",
+			"cwe": "610",
+			"risk_score": "2.8",
+			"category": "Best Practices",
+			"experimental": false,
+			"description": "Use of Curl or Wget should be done instead of Add to fetch packages from remote URLs due to the use of Add being strongly discouraged",
+			"description_id": "29e8216b",
+			"files": [
+				{
+					"file_name": "../../scan/server/build/docker-preview/Dockerfile",
+					"similarity_id": "2f992d4fd587d6b94d5fe00a70bd13c0d4f2259f191df4e0327d09c2ca11782c",
+					"line": 22,
+					"issue_type": "IncorrectValue",
+					"search_key": "FROM={{postgres:14}}.{{ADD https://releases.mattermost.com/${MATTERMOST_VERSION}/mattermost-team-${MATTERMOST_VERSION}-linux-amd64.tar.gz .}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "Should use 'curl' or 'wget' to download https://releases.mattermost.com/${MATTERMOST_VERSION}/mattermost-team-${MATTERMOST_VERSION}-linux-amd64.tar.gz",
+					"actual_value": "'ADD' https://releases.mattermost.com/${MATTERMOST_VERSION}/mattermost-team-${MATTERMOST_VERSION}-linux-amd64.tar.gz"
+				}
+			]
+		},
+		{
+			"query_name": "Healthcheck Instruction Missing",
+			"query_id": "b03a748a-542d-44f4-bb86-9199ab4fd2d5",
+			"query_url": "https://docs.docker.com/engine/reference/builder/#healthcheck",
+			"severity": "LOW",
+			"platform": "Dockerfile",
+			"cwe": "710",
+			"risk_score": "3.6",
+			"category": "Insecure Configurations",
+			"experimental": false,
+			"description": "Ensure that HEALTHCHECK is being used. The HEALTHCHECK instruction tells Docker how to test a container to check that it is still working",
+			"description_id": "426121ee",
+			"files": [
+				{
+					"file_name": "../../scan/webapp/channels/build/Dockerfile",
+					"similarity_id": "693202c81a499e9290408afb3bed9dc7ca3699f1ea456a1d4045873c15b3c554",
+					"line": 1,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{node:14.16}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "Dockerfile should contain instruction 'HEALTHCHECK'",
+					"actual_value": "Dockerfile doesn't contain instruction 'HEALTHCHECK'"
+				},
+				{
+					"file_name": "../../scan/server/build/docker-preview/Dockerfile",
+					"similarity_id": "ed7d6608925805bb7e995b687687e7234395e434976dbb1bae371ae01ddbd463",
+					"line": 3,
+					"issue_type": "MissingAttribute",
+					"search_key": "FROM={{postgres:14}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "Dockerfile should contain instruction 'HEALTHCHECK'",
+					"actual_value": "Dockerfile doesn't contain instruction 'HEALTHCHECK'"
+				}
+			]
+		},
+		{
+			"query_name": "Multiple RUN, ADD, COPY, Instructions Listed",
+			"query_id": "0008c003-79aa-42d8-95b8-1c2fe37dbfe6",
+			"query_url": "https://sysdig.com/blog/dockerfile-best-practices/",
+			"severity": "LOW",
+			"platform": "Dockerfile",
+			"cwe": "710",
+			"risk_score": "0.6",
+			"category": "Best Practices",
+			"experimental": false,
+			"description": "Multiple commands (RUN, COPY, ADD) should be grouped in order to reduce the number of layers.",
+			"description_id": "29bd3a34",
+			"files": [
+				{
+					"file_name": "../../scan/server/build/Dockerfile",
+					"similarity_id": "54ff350736b188adf1e9909a81ffa2850246b22ab50d2aeed829bf2f6df770f9",
+					"line": 61,
+					"issue_type": "RedundantAttribute",
+					"search_key": "FROM={{gcr.io/distroless/base-debian12}}.{{COPY --from=builder /usr/lib/libpoppler.so* /usr/lib/}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "There isn´t any COPY instruction that could be grouped",
+					"actual_value": "There are COPY instructions that could be grouped"
+				}
+			]
+		},
+		{
+			"query_name": "APT-GET Not Avoiding Additional Packages",
+			"query_id": "7384dfb2-fcd1-4fbf-91cd-6c44c318c33c",
+			"query_url": "https://docs.docker.com/engine/reference/builder/#run",
+			"severity": "INFO",
+			"platform": "Dockerfile",
+			"cwe": "710",
+			"risk_score": "0.0",
+			"category": "Supply-Chain",
+			"experimental": false,
+			"description": "Check if any apt-get installs don't use '--no-install-recommends' flag to avoid installing additional packages.",
+			"description_id": "2e92d18c",
+			"files": [
+				{
+					"file_name": "../../scan/webapp/channels/build/Dockerfile",
+					"similarity_id": "216cd5d06597f1ca3955a83dd5521e5ac6cc080e200e82a0a949f32d0513321f",
+					"line": 2,
+					"issue_type": "IncorrectValue",
+					"search_key": "FROM={{node:14.16}}.{{RUN apt-get update \u0026\u0026 apt-get install -y make gcc nasm libpng-dev}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "'RUN apt-get update \u0026\u0026 apt-get install -y make gcc nasm libpng-dev' uses '--no-install-recommends' flag to avoid installing additional packages",
+					"actual_value": "'RUN apt-get update \u0026\u0026 apt-get install -y make gcc nasm libpng-dev' does not use '--no-install-recommends' flag to avoid installing additional packages"
+				},
+				{
+					"file_name": "../../scan/server/build/docker-preview/Dockerfile",
+					"similarity_id": "dc9bf8ed3d3f315678f1ebb58048f261cbadca6a86dc75e3bfff2479c10135f0",
+					"line": 5,
+					"issue_type": "IncorrectValue",
+					"search_key": "FROM={{postgres:14}}.{{RUN apt-get update \u0026\u0026 apt-get install -y ca-certificates}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "'RUN apt-get update \u0026\u0026 apt-get install -y ca-certificates' uses '--no-install-recommends' flag to avoid installing additional packages",
+					"actual_value": "'RUN apt-get update \u0026\u0026 apt-get install -y ca-certificates' does not use '--no-install-recommends' flag to avoid installing additional packages"
+				}
+			]
+		},
+		{
+			"query_name": "Apt Get Install Lists Were Not Deleted",
+			"query_id": "df746b39-6564-4fed-bf85-e9c44382303c",
+			"query_url": "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/",
+			"severity": "INFO",
+			"platform": "Dockerfile",
+			"cwe": "459",
+			"risk_score": "0.0",
+			"category": "Supply-Chain",
+			"experimental": false,
+			"description": "After using apt-get install, it is needed to delete apt-get lists",
+			"description_id": "4236a50c",
+			"files": [
+				{
+					"file_name": "../../scan/server/build/docker-preview/Dockerfile",
+					"similarity_id": "829dc095ff8c3014446e1127014ae3066f24465e1ba073adce78a5ee12caaadb",
+					"line": 5,
+					"issue_type": "IncorrectValue",
+					"search_key": "FROM={{postgres:14}}.RUN={{apt-get update \u0026\u0026 apt-get install -y ca-certificates}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "After using apt-get install, the apt-get lists should be deleted",
+					"actual_value": "After using apt-get install, the apt-get lists were not deleted"
+				},
+				{
+					"file_name": "../../scan/server/build/Dockerfile",
+					"similarity_id": "e4c87654aabc95c873b954ea2759e44ec6b0a22126cfebbcdf3a58977317053b",
+					"line": 14,
+					"issue_type": "IncorrectValue",
+					"search_key": "FROM={{ubuntu:noble-20251013@sha256:c35e29c9450151419d9448b0fd75374fec4fff364a27f176fb458d472dfc9e54 AS builder}}.RUN={{apt-get update   \u0026\u0026 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y   ca-certificates   curl   media-types   mailcap   unrtf   wv   poppler-utils   tidy   tzdata   \u0026\u0026 rm -rf /var/lib/apt/lists/*}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "After using apt-get install, the apt-get lists should be deleted",
+					"actual_value": "After using apt-get install, the apt-get lists were not deleted"
+				},
+				{
+					"file_name": "../../scan/webapp/channels/build/Dockerfile",
+					"similarity_id": "b778956756239755a88c10926a2778edc9cdc9484e2fa733f00f443507279806",
+					"line": 2,
+					"issue_type": "IncorrectValue",
+					"search_key": "FROM={{node:14.16}}.RUN={{apt-get update \u0026\u0026 apt-get install -y make gcc nasm libpng-dev}}",
+					"search_line": -1,
+					"search_value": "",
+					"expected_value": "After using apt-get install, the apt-get lists should be deleted",
+					"actual_value": "After using apt-get install, the apt-get lists were not deleted"
+				}
+			]
+		}
+	]
+}
